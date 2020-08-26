@@ -1,0 +1,11 @@
+button{
+  border-radius: 5%;
+  display: inline-block;
+  height:10vh;
+  margin: auto;
+}
+
+.buttondiv{
+  margin: auto;
+  text-align: center;
+}

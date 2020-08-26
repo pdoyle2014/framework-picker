@@ -1,0 +1,12 @@
+.table{
+  font-size: 1.5rem;
+  margin: 50px auto;
+  text-align: center;
+  width: 50vw;
+}
+
+caption{
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 15px;
+}

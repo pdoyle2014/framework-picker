@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import FrameworkCards from '../../components/FrameworkCards/FrameworkCards';
 import FrameworkTable from '../../components/FrameworkTable/FrameworkTable';
-import CastVote from '../../components/CastVote/CastVote';
+import CastVoteBtn from '../../components/CastVote/CastVoteBtn/CastVoteBtn';
+import Modal from '../../components/UI/Modal/Modal';
 import Aux from '../../hoc/Aux';
 import axios from 'axios';
 
@@ -42,7 +43,17 @@ class FrameworkDisplay extends Component {
       commits: 0,
       issues: 0
     },
+    voting: false,
   };
+
+
+
+  voteHandler = () => {
+    this.setState({voting: true});
+    console.log('button was clicked!');
+  }
+
+
 
 
 
@@ -161,9 +172,6 @@ class FrameworkDisplay extends Component {
         })
     });
 
-
-
-
   };
 
 
@@ -200,6 +208,7 @@ class FrameworkDisplay extends Component {
     // this.setState({frameworks: newFrameworks})
 
      this.getRepoData();
+     setInterval(this.getRepoData, 300000);
   }
 
 
@@ -219,8 +228,9 @@ class FrameworkDisplay extends Component {
     return(
       <Aux>
         <FrameworkCards data={this.state} />
-        <FrameworkTable data={this.state}/>
-        <CastVote/>
+        <Modal state={this.state}/>
+        <FrameworkTable state={this.state} onSort={this.tableSortHandler}/>
+        <CastVoteBtn clicked={this.voteHandler}/>
       </Aux>
     )
   }

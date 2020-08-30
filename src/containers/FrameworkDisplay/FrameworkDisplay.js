@@ -44,48 +44,79 @@ class FrameworkDisplay extends Component {
       issues: 0
     },
     voting: false,
+    voteCast: false,
+    votesArray: []
   };
 
 
 
   voteHandler = () => {
+
     this.setState({voting: true});
+
     console.log('button was clicked!');
+
+    // if(this.state.voteCast === true){
+    //   alert('You just voted! Only one vote per browser session. Refresh the page to vote again');
+    //   return;
+    // } else{
+    //   this.setState({voting: true});
+    // }
+  }
+
+
+  voteCastHandler = (voteData) => {
+
+
+    // axios.post('/didVote', voteData)
+    // .then(response => {
+    //   console.log('This person already voted. true or false:')
+    //   console.log(response.data);
+    // })
+    //
+    //
+    // axios.post('/votes', this.state)
+    // .then(response => {
+    //   console.log(response.data);
+    // });
+
+
+    console.log('the voteData is: ' + voteData);
+
+    this.setState({voteCast: true});
+    console.log("vote was cast! email is: " + voteData.email)
+
+
+    if(this.state.votesArray.includes(voteData.email)) {
+      alert('This user already voted.')
+    } else {
+      console.log('this voter is NOT in the voter array in the state variable')
+
+      let voteObj = {
+        email: voteData.email,
+        choice: voteData.choice
+      };
+
+      axios.post('/votes', voteObj)
+      .then(response => {
+        console.log(response.data);
+      });
+    }
+
+
+
+
+    this.setState({voting: false});
+    this.setState({votesArray: this.state.votesArray + voteData.email});
+
+
   }
 
 
 
 
 
-
   getRepoData = () => {
-
-    // this.state.frameworks.forEach(el => {
-    //
-    //   axios.get(`https://api.github.com/repos/${el.owner}/${el.repoName}`)
-    //   .then(response => {
-    //     console.log(`Results for ${el.name} printed below:`)
-    //     console.log('Number of subscribers: ' + response.data.subscribers_count)
-    //     el.watchers = response.data.subscribers_count;
-    //
-    //     console.log('Number of open issues: ' + response.data.open_issues)
-    //     el.issues = response.data.open_issues;
-    //
-    //   })
-    //
-    //   axios.get(`https://api.github.com/repos/${el.owner}/${el.repoName}/stats/participation`)
-    //   .then(response => {
-    //     // console.log(response)
-    //
-    //     let totCommits = 0;
-    //     response.data.all.forEach(el => {totCommits += el});
-    //
-    //     console.log('Total commits over the past year: ' + totCommits)
-    //     el.commits=totCommits;
-    //   })
-    //
-    // })
-
     axios.get('https://api.github.com/repos/facebook/react')
     .then(response => {
       console.log('Number of subscribers to React: ' + response.data.subscribers_count);
@@ -215,20 +246,10 @@ class FrameworkDisplay extends Component {
 
 
   render(){
-
-    // const frameworks = this.state.frameworks.map(framework => {
-    //   return (<FrameworkCard
-    //           name={framework.name}
-    //           watchers={framework.watchers}
-    //           commits={framework.commits}
-    //           issues={framework.issues}/>);
-    // })
-
-
     return(
       <Aux>
         <FrameworkCards data={this.state} />
-        <Modal state={this.state}/>
+        <Modal state={this.state} cast={this.voteCastHandler} collect={this.voteCollectHandler}/>
         <FrameworkTable state={this.state} onSort={this.tableSortHandler}/>
         <CastVoteBtn clicked={this.voteHandler}/>
       </Aux>

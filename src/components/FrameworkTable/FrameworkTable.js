@@ -97,7 +97,7 @@ class FrameworkTable extends Component {
         <thead>
           <tr>
             <th>
-              <button type="button"  onClick={this.tableSortHandler(0)}>
+              <button type="button">
               Name
               </button>
             </th>

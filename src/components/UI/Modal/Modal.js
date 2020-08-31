@@ -24,32 +24,7 @@ class Modal extends Component {
 
   afterSubmission = (event) => {
     event.preventDefault();
-
-    let voteData = {
-      email: this.state.email,
-      choice: this.state.choice
-    }
-
-
-    axios.get('/hey')
-    .then(response => {
-      console.log(response.data)
-    })
-
-
-    // axios.post('/didVote', this.state)
-    // .then(response => {
-    //   console.log('This person already voted. true or false:')
-    //   console.log(response.data);
-    // })
-
-
-    // axios.post('/votes', this.state)
-    // .then(response => {
-    //   console.log(response.data);
-    // });
-
-  }
+  };
 
 
   render(){

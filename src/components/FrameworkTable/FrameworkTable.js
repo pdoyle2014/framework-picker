@@ -15,17 +15,16 @@ class FrameworkTable extends Component {
 
 
 
+  sortedArray = [];
+
+
+
   tableSortHandler = (param) => {
-    // if (this.state.sortParam === param){
-    //   console.log('flipping the asc/desc order');
-    //   let curValue = this.state.sortAsc;
-    //   this.setState({sortAsc: !curValue})
-    // }
-    //
-    // this.setState({sortParam: param});
+
+    console.log('tableSortHandler within FrameworkTable.js has executed');
+
     let sortParamArray = [];
     let sortedArray = [];
-
 
     switch (param){
       case 0:
@@ -45,7 +44,7 @@ class FrameworkTable extends Component {
         (this.state.sortAsc === true) ? (sortedArray = sortParamArray.sort(function(a,b){return a-b})) : (sortedArray = sortParamArray.sort(function(a,b){return b-a}))
         break;
 
-      case 3:
+      default:
         sortParamArray = [this.props.state.react.issues, this.props.state.angular.issues, this.props.state.vue.issues, this.props.state.ember.issues];
         (this.state.sortAsc === true) ? (sortedArray = sortParamArray.sort(function(a,b){return a-b})) : (sortedArray = sortParamArray.sort(function(a,b){return b-a}))
         break;
@@ -53,7 +52,7 @@ class FrameworkTable extends Component {
 
     // this.state.sortAsc === true ? console.log(sortParamArray.sort())  : console.log(sortParamArray.reverse())
 
-    // console.log(sortedArray);
+    console.log(sortedArray);
   }
 
 
@@ -93,31 +92,12 @@ class FrameworkTable extends Component {
   return(
     <Aux>
       <table className={styles.table}>
-        <caption>Framework Stats</caption>
-        <thead>
-          <tr>
-            <th>
-              <button type="button">
-              Name
-              </button>
-            </th>
-            <th>
-              <button type="button">
-              Subscribers
-              </button>
-            </th>
-            <th>
-              <button type="button">
-              Commits in past year
-              </button>
-            </th>
-            <th>
-              <button type="button">
-              Open Issues
-              </button>
-            </th>
-          </tr>
-        </thead>
+      <thead>
+        <th>Name</th>
+        <th>Subscribers</th>
+        <th>Commits in Past Year</th>
+        <th>Open Issues</th>
+      </thead>
         <tbody>
           {frameworks.map(el => (
             <tr>

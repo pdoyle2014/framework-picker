@@ -3,6 +3,8 @@ import FrameworkCards from '../../components/FrameworkCards/FrameworkCards';
 import FrameworkTable from '../../components/FrameworkTable/FrameworkTable';
 import CastVoteBtn from '../../components/CastVote/CastVoteBtn/CastVoteBtn';
 import Modal from '../../components/UI/Modal/Modal';
+import Header from '../../components/FrameworkTable/TableHeader/TableHeader';
+import Body from '../../components/FrameworkTable/TableBody/TableBody';
 import Aux from '../../hoc/Aux';
 import axios from 'axios';
 
@@ -45,53 +47,200 @@ class FrameworkDisplay extends Component {
     },
     voting: false,
     voteCast: false,
-    votesArray: []
+    votesArray: [],
+    sortColumn: 'name',
+    dispSeq: ['react', 'angular', 'ember', 'vue']
   };
 
 
 
+
+  dispSeq = [];
+
+//   frameworkSorter = () => {
+//     let sortArray = [];
+//     let sortedKeyArray = [];
+//     let sortedArray = [];
+//     // let dispSeq = [];
+//     let frameworkObjArray = [this.state.react, this.state.angular, this.state.vue, this.state.ember];
+//
+//
+//     switch (this.state.sortColumn){
+//       case('name'):
+//         sortArray = [this.state.react.name, this.state.angular.name, this.state.ember.name, this.state.vue.name];
+//         sortedArray = sortArray.sort();
+//         // this.setState({dispSeq: sortedArray});
+//         console.log('The frameworks, sorted by sortby parameter, are: ' + sortedArray);
+//         return(
+//           <Body
+//             seq={sortedArray}
+//             state={this.state} />
+//         )
+//         break;
+//
+//
+//       case('watchers'):
+//         sortArray = [this.state.react.watchers, this.state.angular.watchers, this.state.ember.watchers, this.state.vue.watchers];
+//         sortedArray = sortArray.sort(function(a,b){return b-a});
+//
+//         sortedArray.forEach(el => {
+//           this.dispSeq.push( frameworkObjArray.find(x => x.watchers === el).name );
+//         })
+//         // this.setState({dispSeq: dispSeq});
+//         console.log('The frameworks, sorted by sortby parameter, are: ' + this.dispSeq);
+//         return(
+//           <Body
+//             seq={dispSeq}
+//             state={this.state} />
+//           );
+//         break;
+//
+//
+//       case('commits'):
+//         sortArray = [this.state.react.commits, this.state.angular.commits, this.state.ember.commits, this.state.vue.commits];
+//         sortedArray = sortArray.sort(function(a,b){return b-a});
+//
+//         sortedArray.forEach(el => {
+//           dispSeq.push( frameworkObjArray.find(x => x.commits === el).name );
+//         })
+//         // this.setState({dispSeq: dispSeq});
+//         console.log('The frameworks, sorted by sortby parameter, are: ' + dispSeq);
+//         return(
+//           <Body
+//             seq={dispSeq}
+//             state={this.state} />
+//         );
+//         break;
+//
+//
+//       default:
+//         sortArray = [this.state.react.issues, this.state.angular.issues, this.state.ember.issues, this.state.vue.issues];
+//         sortedArray = sortArray.sort(function(a,b){return b-a});
+//         sortedArray.forEach(el => {
+//           dispSeq.push( frameworkObjArray.find(x => x.issues === el).name );
+//         })
+//         // this.setState({dispSeq: dispSeq});
+//         console.log('The frameworks, sorted by sortby parameter, are: ' + dispSeq);
+//         return(
+//           <Body
+//             seq={dispSeq}
+//             state={this.state} />
+//         );
+//         break;
+//
+//   };
+// };
+
+
+
+
+
+
+
+
+
+
+  body = {};
+
+
+
+
+
+
+
+
+  sortColumnHandler = (column) => {
+    console.log('The new sort-by column is: ' + column);
+    // this.setState({sortColumn: column});
+    // this.frameworkSorter();
+
+
+    let sortArray = [];
+    let sortedKeyArray = [];
+    let sortedArray = [];
+    let dispSeq = [];
+    let frameworkObjArray = [this.state.react, this.state.angular, this.state.vue, this.state.ember];
+
+
+    switch (column){
+      case('name'):
+        sortArray = [this.state.react.name, this.state.angular.name, this.state.ember.name, this.state.vue.name];
+        sortedArray = sortArray.sort();
+        // this.setState({dispSeq: sortedArray});
+        console.log('The frameworks, sorted by sortby parameter, are: ' + sortedArray);
+        this.dispSeq = sortedArray;
+        break;
+
+
+      case('watchers'):
+        sortArray = [this.state.react.watchers, this.state.angular.watchers, this.state.ember.watchers, this.state.vue.watchers];
+        sortedArray = sortArray.sort(function(a,b){return b-a});
+
+        sortedArray.forEach(el => {
+          this.dispSeq.push( frameworkObjArray.find(x => x.watchers === el).name );
+        })
+        // this.setState({dispSeq: dispSeq});
+        console.log('The frameworks, sorted by sortby parameter, are: ' + this.dispSeq);
+        break;
+
+
+      case('commits'):
+        sortArray = [this.state.react.commits, this.state.angular.commits, this.state.ember.commits, this.state.vue.commits];
+        sortedArray = sortArray.sort(function(a,b){return b-a});
+
+        sortedArray.forEach(el => {
+          this.dispSeq.push( frameworkObjArray.find(x => x.commits === el).name );
+        })
+        // this.setState({dispSeq: dispSeq});
+        console.log('The frameworks, sorted by sortby parameter, are: ' + this.dispSeq);
+        break;
+
+
+      default:
+        sortArray = [this.state.react.issues, this.state.angular.issues, this.state.ember.issues, this.state.vue.issues];
+        sortedArray = sortArray.sort(function(a,b){return b-a});
+        sortedArray.forEach(el => {
+          this.dispSeq.push( frameworkObjArray.find(x => x.issues === el).name );
+        })
+        // this.setState({dispSeq: dispSeq});
+        console.log('The frameworks, sorted by sortby parameter, are: ' + this.dispSeq);
+        break;
+
+    };
+
+
+
+
+  }
+
+
+
+
+
+
+
+
+
+
+
   voteHandler = () => {
-
-    this.setState({voting: true});
-
-    console.log('button was clicked!');
-
-    // if(this.state.voteCast === true){
-    //   alert('You just voted! Only one vote per browser session. Refresh the page to vote again');
-    //   return;
-    // } else{
-    //   this.setState({voting: true});
-    // }
+    //By updating the value of "voting" within the state, this function effectively shows or hides the voting modal.
+  this.setState({voting: true});
   }
 
 
   voteCastHandler = (voteData) => {
-
-
-    // axios.post('/didVote', voteData)
-    // .then(response => {
-    //   console.log('This person already voted. true or false:')
-    //   console.log(response.data);
-    // })
-    //
-    //
-    // axios.post('/votes', this.state)
-    // .then(response => {
-    //   console.log(response.data);
-    // });
-
 
     console.log('the voteData is: ' + voteData);
 
     this.setState({voteCast: true});
     console.log("vote was cast! email is: " + voteData.email)
 
-
+    //Checks to see if the email address voting now is present in the state object.
+    //If this email address is present, then the user has already voted during this session and the vote is rejected.
     if(this.state.votesArray.includes(voteData.email)) {
       alert('This user already voted.')
     } else {
-      console.log('this voter is NOT in the voter array in the state variable')
-
       let voteObj = {
         email: voteData.email,
         choice: voteData.choice
@@ -103,12 +252,9 @@ class FrameworkDisplay extends Component {
       });
     }
 
-
-
-
-    this.setState({voting: false});
-    this.setState({votesArray: this.state.votesArray + voteData.email});
-
+    //Hide the voting modal and add the email address to the array of those who have voted during current browser session.
+  this.setState({voting: false});
+  this.setState({votesArray: this.state.votesArray + voteData.email});
 
   }
 
@@ -117,140 +263,137 @@ class FrameworkDisplay extends Component {
 
 
   getRepoData = () => {
+    //This function reaches out to various endpoints within Github's API and updates the component's state to contain fetched data.
+    let newReact = {
+      name: 'React',
+      watchers: 0,
+      issues: 0,
+      commits: 0
+    };
+
+    let newAngular = {
+      name: 'Angular',
+      watchers: 0,
+      issues: 0,
+      commits: 0
+    };
+
+    let newVue = {
+      name: 'Vue',
+      watchers: 0,
+      issues: 0,
+      commits: 0
+    };
+
+    let newEmber = {
+      name: 'Ember',
+      watchers: 0,
+      issues: 0,
+      commits: 0
+    };
+
     axios.get('https://api.github.com/repos/facebook/react')
     .then(response => {
-      console.log('Number of subscribers to React: ' + response.data.subscribers_count);
-      console.log('Number of open issues in React: ' + response.data.open_issues);
-      let newReact = {
-        name:'React',
-        watchers: response.data.subscribers_count,
-        issues: response.data.open_issues,
-        commits: 0
-      };
+      newReact.watchers = response.data.subscribers_count;
 
       axios.get(`https://api.github.com/repos/facebook/react/stats/participation`)
-        .then(response => {
-          let totCommits=0;
-          response.data.all.forEach(el => {totCommits += el});
+      .then(response => {
+        let totCommits=0;
+        response.data.all.forEach(el => {totCommits += el});
+        newReact.commits = totCommits;
 
-          newReact.commits = totCommits;
-          this.setState({react: newReact})
-        })
-    });
+        axios.get('https://api.github.com/search/issues?q=repo:facebook/react+type:issue+state:open&per_page=1')
+          .then(response => {
+            newReact.issues = response.data.total_count;
+            this.setState({react: newReact});
+          });
+        });
+      });
 
 
     axios.get('https://api.github.com/repos/angular/angular.js')
     .then(response => {
-      console.log('Number of subscribers to angular: ' + response.data.subscribers_count);
-      console.log('Number of open issues in angular: ' + response.data.open_issues);
-      let newAngular = {
-        name:'Angular',
-        watchers: response.data.subscribers_count,
-        issues: response.data.open_issues,
-        commits: 0
-      };
+      newAngular.watchers = response.data.subscribers_count;
 
       axios.get(`https://api.github.com/repos/angular/angular.js/stats/participation`)
         .then(response => {
           let totCommits=0;
           response.data.all.forEach(el => {totCommits += el});
-
           newAngular.commits = totCommits;
-          this.setState({angular: newAngular})
+
+          axios.get('https://api.github.com/search/issues?q=repo:angular/angular.js+type:issue+state:open&per_page=1')
+          .then(response => {
+            newAngular.issues = response.data.total_count;
+            this.setState({angular: newAngular})
+          })
         })
     });
 
 
     axios.get('https://api.github.com/repos/emberjs/ember.js')
     .then(response => {
-      console.log('Number of subscribers to ember: ' + response.data.subscribers_count);
-      console.log('Number of open issues in ember: ' + response.data.open_issues);
-      let newEmber = {
-        name:'Ember',
-        watchers: response.data.subscribers_count,
-        issues: response.data.open_issues,
-        commits: 0
-      };
+      newEmber.watchers = response.data.subscribers_count;
 
       axios.get(`https://api.github.com/repos/emberjs/ember.js/stats/participation`)
         .then(response => {
           let totCommits=0;
           response.data.all.forEach(el => {totCommits += el});
-
           newEmber.commits = totCommits;
-          this.setState({ember: newEmber})
+
+          axios.get('https://api.github.com/search/issues?q=repo:emberjs/ember.js+type:issue+state:open&per_page=1')
+          .then(response => {
+            newEmber.issues = response.data.total_count;
+            this.setState({ember: newEmber})
+          })
         })
     });
 
     axios.get('https://api.github.com/repos/vuejs/vue')
     .then(response => {
-      console.log('Number of subscribers to vue: ' + response.data.subscribers_count);
-      console.log('Number of open issues in vue: ' + response.data.open_issues);
-      let newVue = {
-        name:'Vue',
-        watchers: response.data.subscribers_count,
-        issues: response.data.open_issues,
-        commits: 0
-      };
+      newVue.watchers = response.data.subscribers_count;
 
       axios.get(`https://api.github.com/repos/vuejs/vue/stats/participation`)
         .then(response => {
           let totCommits=0;
           response.data.all.forEach(el => {totCommits += el});
-
           newVue.commits = totCommits;
-          this.setState({vue: newVue})
+
+          axios.get('https://api.github.com/search/issues?q=repo:vuejs/vue+type:issue+state:open&per_page=1')
+          .then(response => {
+            newVue.issues = response.data.total_count;
+            this.setState({vue: newVue})
+          })
         })
     });
-
   };
 
 
 
+  componentDidUpdate(){
+    this.sortColumnHandler();
+  }
+
+
   componentDidMount(){
-
-    // let newFrameworks = this.state.frameworks.map((el, index) => {
-    //
-    //   axios.get(`https://api.github.com/repos/${el.owner}/${el.repoName}`)
-    //   .then(response => {
-    //     console.log(`Results for ${el.name} printed below:`)
-    //     console.log('Number of subscribers: ' + response.data.subscribers_count)
-    //     el.watchers = response.data.subscribers_count;
-    //
-    //
-    //     console.log('Number of open issues: ' + response.data.open_issues)
-    //     el.issues = response.data.open_issues;
-    //
-    //   })
-    //
-    //   axios.get(`https://api.github.com/repos/${el.owner}/${el.repoName}/stats/participation`)
-    //   .then(response => {
-    //     // console.log(response)
-    //
-    //     let totCommits = 0;
-    //     response.data.all.forEach(el => {totCommits += el});
-    //
-    //     console.log('Total commits over the past year: ' + totCommits)
-    //     el.commits=totCommits;
-    //   })
-    //
-    // })
-    //
-    // this.setState({frameworks: newFrameworks})
-
-     this.getRepoData();
-     setInterval(this.getRepoData, 300000);
+    this.getRepoData();
+    // setInterval(this.getRepoData, 30000);
   }
 
 
 
+  // <FrameworkTable clicked={this.sortColumnHandler} state={this.state}/>
+
 
   render(){
+
+    let body = <Body seq={this.dispSeq} state={this.state} />
+
+
     return(
       <Aux>
         <FrameworkCards data={this.state} />
         <Modal state={this.state} cast={this.voteCastHandler} collect={this.voteCollectHandler}/>
-        <FrameworkTable state={this.state} onSort={this.tableSortHandler}/>
+        <FrameworkTable state={this.state}/>
         <CastVoteBtn clicked={this.voteHandler}/>
       </Aux>
     )
